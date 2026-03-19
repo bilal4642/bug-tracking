@@ -7,13 +7,16 @@ const { db } = require("./helpers");
 
 const routes = require("./routes");
 const app = express();
-app.get("/test", (req:any, res:any) => {
-  res.send("working");
-});
-// app.get("/", (req: any, res: any) => {
-//   res.send("Hello");
+
+// app.get("/test", (req:any, res:any) => {
+//   res.send("working");
 // });
 
+// app.use(cors({
+//   origin: "http://localhost:4000",
+//   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+//   allowedHeaders: ["Content-Type", "Authorization"],
+// }));
 app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
@@ -37,6 +40,6 @@ const startServer = async () => {
 
 startServer();
 
-app.listen(3000, ()=>{
+app.listen(5000, ()=>{
     console.log("app is running on port 5500"); 
 });

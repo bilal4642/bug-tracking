@@ -10,12 +10,11 @@ class AuthController {
         success: true,
         data: user,
       });
-    } catch (error) {
-      console.log(
-        `signup:: Request to sign up user failed. data:: `,
-        req.body,
-        error,
-      );
+    } catch (error:any) {
+        return res.status(error.code || 500).json({
+          success: false,
+          message: error.reportError ? error.message : "Enter Valid Data"
+        });
     }
   }
 
@@ -23,14 +22,19 @@ class AuthController {
     try {
         console.log("login route");
         
-        const user = AuthManager.login(req.body);
+        const user =await AuthManager.login(req.body);
 
         res.json({
             success: true,
             data: user
         });
-    } catch (error) {
-        console.log(error);
+    } catch (error:any) {
+      console.log("Catch errrorororororororo");
+      
+        return res.status(error.code || 500).json({
+          success: false,
+          message: error.reportError ? error.message : "Enter Valid Data"
+        });
     }
   }
 }

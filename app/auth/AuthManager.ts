@@ -2,19 +2,24 @@ const { AuthUtil } = require("../../utilities");
 
 const {UserHandler} = require("../../handlers");
 
-const { Token, bcrypt } = require("../../helpers");
+const { Token, bcrypt, Exception } = require("../../helpers");
+const { UserConstants, ErrorCodes } = require("../../constants");
 
 class AuthManager {
   static async signup(data: any) {
-    // AuthUtil.validateSignUpRequest(data);
+
+    AuthUtil.validateSignUpRequest(data);
+    console.log("dataaa");
+    
+    
+
     let user = await UserHandler.findUserByEmail(data.email);
     // console.log(data);
 
-    // AuthUtil.validateUserForSignUp(user);
+    AuthUtil.validateUserForSignUp(user);
     data.password = await AuthUtil.createHashedPassword(data.password);
     // console.log(data);
     // console.log("data is ");
-    
 
     user = await UserHandler.createUser(data);
 
@@ -32,22 +37,37 @@ class AuthManager {
     const refreshToken = Token.getRefreshToken(user);
 
     const [_,[updatedUser]] = await UserHandler.setAccessToken(user.id, accessToken, refreshToken);
-
-    user = AuthUtil.updateUserData(updatedUser.toJSON());
+    user.access_token = accessToken;
+    user.refresh_token = refreshToken;
+    
+    user = AuthUtil.updateUserData(user.toJSON());
 
     return user;
   }
 
   static async login(data: any){
-      
-      let user = await UserHandler.findUserByEmail(data.email);
-      
-      const passwordMatch = await bcrypt.compare(data.password, user.password);
-      console.log("login routtttttt");
 
-    user = await AuthManager.setAccessToken(user);
+    AuthUtil.validateLoginRequest(data);
+      
+    let user = await UserHandler.findUserByEmail(data.email);
 
+    AuthUtil.validateUserToAuthenticate(user);
+      
+    const passwordMatched = await bcrypt.compare(data.password, user.password);
+
+     if (!passwordMatched) {
+    
+          console.log(`login:: Password does not match. users:: ${JSON.stringify(user)} data:: `, data);
+    
+          throw new Exception(UserConstants.MESSAGES.PASSWORD_DOES_NOT_MATCH, ErrorCodes.UNAUTHORIZED, { reportError: true }).toJson();
+    
+        }
+        
+        user = await AuthManager.setAccessToken(user);
+        
+        console.log("login routtttttt");
     console.log(user);
+    console.log("userrrrrrrrrrrrrrrrrrrr");
     
     return user;
     

@@ -1,8 +1,7 @@
-const {ProjectHandler} = require("../../handlers")
+const {UserHandler,ProjectHandler} = require("../../handlers")
 class ProjectManager{
     static async getProjects(user: any){
-        const projects = await ProjectHandler.getAllProjects(user.id);
-        // console.log(user.id, "ididididi", user.id);
+        const projects = await ProjectHandler.getAllProjects(user);
         return projects
     }
 
@@ -13,6 +12,15 @@ class ProjectManager{
     static async getProjectById(req:any){
         const project = await ProjectHandler.getProjectById(req);
         return project;
+    }
+    static async deleteProject(req:any){
+        const project = await ProjectHandler.deleteProject(req);
+        return project;
+    }
+
+    static async getProjectUser(req:any){
+        const projUser = await UserHandler.getProjectUser(req);
+        return projUser;
     }
 }
 

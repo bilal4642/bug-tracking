@@ -15,6 +15,16 @@ class BugManager{
         
         return bug;
     }
+
+    static async updateStatus(req: any){
+        const data = await BugHandler.updateStatus(req);
+        return data;
+    }
+
+    static async deletedBug(req: any){
+        const user = await BugHandler.deletedBug(req);
+        return user;
+    }
 }
 
 module.exports = BugManager

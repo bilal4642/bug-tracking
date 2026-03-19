@@ -7,14 +7,14 @@ class Exception extends Error {
     this.meta = meta;
   }
 
-  toJson() {
-    const json = JSON.parse(JSON.stringify(this.meta || {}));
+    toJson() {
+      const json = JSON.parse(JSON.stringify(this.meta || {}));
 
-    json.code = this.code;
-    json.message = this.message;
+      json.code = this.code;
+      json.message = this.message;
 
-    return json;
-  }
+      return json;
+    }
 }
 
 module.exports = Exception;

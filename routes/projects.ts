@@ -10,6 +10,6 @@ router.get("/projects/:id",Authentication.authenticate, ProjectController.getPro
 
 router.post("/projects", Authentication.authenticate ,ProjectController.addProject );
 
-
+// router.delete("/projects/:id", Authentication.authenticate ,ProjectController.deleteProject);
 
 module.exports = router;

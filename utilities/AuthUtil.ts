@@ -53,7 +53,11 @@ class AuthUtil {
     }
   }
   static updateUserData (user: any) {
-
+    
+    console.log("The The dta is in updateUser Functions dta is in updateUser Functions");
+    console.log(user);
+    
+    
     if (!user) {
 
       return user;
@@ -65,6 +69,44 @@ class AuthUtil {
     return user;
 
   }
+  static validateLoginRequest (data:any) {
+  
+      if (!data || (!data.email)) {
+  
+        console.log(`validateLoginRequest:: Invalid data to login user. data:: `, data);
+  
+        throw new Exception(UserConstants.MESSAGES.INVALID_DATA_TO_LOGIN, ErrorCodes.UNAUTHORIZED, { reportError: true }).toJson();
+  
+      }
+  
+      if (data.email && !Validators.isValidateEmail(data.email)) {
+  
+        console.log(`validateLoginRequest:: Invalid email to login user. data:: `, data);
+  
+        throw new Exception(UserConstants.MESSAGES.INVALID_EMAIL, ErrorCodes.UNAUTHORIZED, { reportError: true }).toJson();
+  
+      }
+  
+      if (!Validators.isValidStr(data.password)) {
+  
+        console.log(`validateLoginRequest:: Invalid password to login user. data:: `, data);
+  
+        throw new Exception(UserConstants.MESSAGES.INVALID_PASSWORD, ErrorCodes.UNAUTHORIZED, { reportError: true }).toJson();
+  
+      }
+  
+    }
+    static validateUserToAuthenticate (user:any) {
+    
+        if (!user) {
+    
+          console.log(`validateUserToAuthenticate:: User does not exist. user:: `, user);
+    
+          throw new Exception(UserConstants.MESSAGES.USER_DOES_NOT_EXIST, ErrorCodes.BAD_REQUEST, { reportError: true }).toJson();
+    
+        }
+    
+      }
 }
 
 module.exports = AuthUtil;

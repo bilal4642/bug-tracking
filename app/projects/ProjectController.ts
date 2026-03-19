@@ -33,12 +33,36 @@ class ProjectController{
     }
 
     static async getProjectById(req:any,res:any){
-        
+
         const project = await ProjectManager.getProjectById(req);
         res.json({
                 success: true,
                 data: project
             })
+    }
+
+    static async deleteProject(req:any, res: any){
+        const project = await ProjectManager.deleteProject(req);
+        res.json({
+                success: true,
+                data: project
+            })
+
+    }
+
+    static async getProjectUser(req: any, res: any){
+        try {   
+            console.log("all project user");
+            
+            const projUser = await ProjectManager.getProjectUser(req.user);
+            res.json({
+                success: true,
+                data: projUser
+            })
+            
+        } catch (error) {
+            
+        }
     }
 }
 

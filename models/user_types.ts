@@ -4,6 +4,7 @@ class User_Types extends Model {
   static associate(models: any) {
     User_Types.hasMany(models.User, {
       foreignKey: "user_type_id",
+      as: "role"
     });
 
     User_Types.hasMany(models. Project_Members,{
